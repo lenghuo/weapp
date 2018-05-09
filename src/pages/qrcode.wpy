@@ -1,0 +1,66 @@
+<style lang="less">
+  .qrcode-demo {
+    color: #1296db;
+  }
+</style>
+<template>
+  <view class="qrcode-demo">{{ wine.id }}</view>
+  <view class="qrcode-demo">{{ wine.wine.name }}</view>
+  <view class="qrcode-demo">{{ wine.company.name }}</view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '@/utils/api'
+
+  export default class Qrcode extends wepy.page {
+    config = {
+      navigationBarTitleText: '二维码查询'
+    }
+    // 可用于页面模板绑定的数据
+    data = {
+      // 话题数据
+      wine: null
+      // 当前分页
+      // page: 1,
+      // noMoreData: false
+    }
+    async getQrcode(qrcode) {
+      try {
+        let scanQrcode = await api.request({
+          url: 'qrcode/' + qrcode
+        })
+        let wine = scanQrcode.data.data
+        this.wine = wine
+        this.$apply()
+        let used = wine.user_life
+        if (used > 3) {
+          wepy.showModal({
+            title: '提示',
+            content: '已经查询2次以上，请到正规商家检测你是否购买的是正品',
+            success: function(res) {
+              if (res.confirm) {
+                console.log('用户点击的是确定')
+              }
+            }
+          })
+        }
+        if (scanQrcode.statusCode === 404) {
+          wepy.showModal({
+            title: '提示',
+            content: '二维码查询出错，请重新查询'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员或者重试',
+          showCancel: false
+        })
+      }
+    }
+    async onLoad(options) {
+      this.getQrcode(options.qrcode)
+    }
+  }
+</script>

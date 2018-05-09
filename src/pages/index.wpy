@@ -1,0 +1,87 @@
+<style lang="less">
+  page {
+    background: #f2f2f2;
+  }
+  .demo {
+    display: block;
+    width: 100%;
+    height: 250rpx;
+  }
+  .demo-wrap {
+    margin-top: 40%;
+  }
+  .demo__pic {
+    width: 200rpx;
+    height: 200rpx;
+    margin: 15rpx;
+  }
+  .demo_text {
+    text-align: center;
+    color: #1296db;
+  }
+</style>
+<template>
+  <view class="demo-wrap">
+    <wxc-cc class="demo">
+      <view class="demo-wraper">
+        <image class="demo__pic" src="../images/qrcode.png" mode="aspectFit" @tap="scan" />
+      </view>
+      <view class="demo-wraper">
+        <image class="demo__pic" src="../images/trace.png" mode="aspectFit" />
+      </view>
+    </wxc-cc>
+    <wxc-cc class="demo">
+      <view class="demo-wraper">
+        <image class="demo__pic" src="../images/nfc.png" mode="aspectFit" @tap="nfc" />
+      </view>
+      <view class="demo-wraper">
+        <wxc-toast class="J_toast" text="该功能暂未开放，敬请期待"></wxc-toast>
+        <image class="demo__pic" src="../images/more.png" mode="aspectFit" @tap="more" />
+      </view>
+    </wxc-cc>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '酒链溯源追溯',
+      usingComponents: {
+        'wxc-cc': '../../packages/@minui/wxc-cc/dist/index',
+        'wxc-toast': '../../packages/@minui/wxc-toast/dist/index'
+      }
+    }
+
+    data = {
+      url: null,
+      scan: null,
+      str: null
+    }
+
+    async scan () {
+      let scan = await wepy.scanCode()
+      this.scan = scan.result
+      this.$apply()
+      if (scan) {
+        wepy.navigateTo({
+          url: './qrcode?qrcode=' + this.scan
+        })
+      }
+    }
+    methods = {
+      more (e) {
+        let $toast = this.$wxpage.selectComponent('.J_toast')
+        $toast && $toast.show()
+      },
+      nfc (e) {
+        wepy.navigateTo({
+          url: './nfc'
+        })
+      }
+    }
+
+    onLoad() {}
+  }
+</script>

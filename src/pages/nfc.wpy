@@ -1,0 +1,42 @@
+<style>
+  page {
+    background: #f2f2f2;
+  }
+</style>
+<template>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+
+  export default class Nfc extends wepy.page {
+    config = {
+      navigationBarTitleText: 'NFC查询'
+    }
+    data = {
+      nfc: {}
+    }
+    async onShow() {
+      try {
+        let nfc = await wepy.getHCEState()
+        this.nfc = nfc
+        this.$apply()
+      } catch (err) {
+        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: err.errMsg,
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              wepy.switchTab({
+                url: 'pages/index'
+              })
+            }
+          }
+        })
+      }
+    }
+  }
+</script>

@@ -1,0 +1,44 @@
+<style>
+
+</style>
+<template>
+
+</template>
+<script>
+  import wepy from 'wepy'
+  // import api from '@/utils/api'
+
+  export default class Qrcode extends wepy.page {
+    config = {
+      navigationBarTitleText: '二维码查询'
+    }
+    data = {}
+    async getQrcode() {
+      let detail = await wepy.request({
+        url: 'http://new.blog.test/qrcode/FB2018043000000003'
+      })
+      console.log(detail)
+      // let detail = await api.request({
+      //   url: 'qrcode/' + qrcode
+      // })
+      // console.log(detail)
+      // try {
+      //   let qrcodeResponse = await api.request({
+      //     url: 'qrcode/' + qrcode
+      //   })
+      //   // let qrcodeDetail = qrcodeResponse.data
+      //   console.log(qrcodeResponse)
+      // } catch (err) {
+      //   console.log(err)
+      //   wepy.showModal({
+      //     title: '提示',
+      //     content: '服务器异常，请联系管理员'
+      //   })
+      // }
+    }
+    onLoad() {
+      // console.log(options)
+      this.getQrcode()
+    }
+  }
+</script>
