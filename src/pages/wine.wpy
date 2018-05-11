@@ -1,0 +1,30 @@
+<style lang="less">
+</style>
+<template>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '@/utils/api'
+
+  export default class Wine extends wepy.page {
+    config = {}
+    data = {}
+    async getWine(id) {
+      try {
+        let wine = await api.request({
+          url: 'wine/' + id
+        })
+        console.log(wine)
+      } catch (err) {
+        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
+    }
+    onLoad(options) {
+      this.getWine(options.id)
+    }
+  }
+</script>

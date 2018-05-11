@@ -7,6 +7,7 @@
   <view class="qrcode-demo">{{ wine.id }}</view>
   <view class="qrcode-demo">{{ wine.wine.name }}</view>
   <view class="qrcode-demo">{{ wine.company.name }}</view>
+  <wxc-steps steps="{{ steps }}" current="{{ current }}">dede</wxc-steps>
 </template>
 <script>
   import wepy from 'wepy'
@@ -14,15 +15,18 @@
 
   export default class Qrcode extends wepy.page {
     config = {
-      navigationBarTitleText: '二维码查询'
+      navigationBarTitleText: '二维码查询',
+      usingComponents: {
+        'wxc-steps': '../../packages/@minui/wxc-steps/dist/index'
+      }
     }
     // 可用于页面模板绑定的数据
     data = {
-      // 话题数据
-      wine: null
-      // 当前分页
-      // page: 1,
-      // noMoreData: false
+      // 红酒二维码查询信息
+      wine: null,
+      // 显示查询时间列表
+      steps: [],
+      current: 1
     }
     async getQrcode(qrcode) {
       try {
@@ -30,16 +34,19 @@
           url: 'qrcode/' + qrcode
         })
         let wine = scanQrcode.data.data
+        console.log(wine)
         this.wine = wine
+        this.steps = scanQrcode.data.data.time.time
         this.$apply()
-        let used = wine.user_life
-        if (used > 3) {
+        let used = wine.used_lift
+        if (used >= 3) {
           wepy.showModal({
             title: '提示',
-            content: '已经查询2次以上，请到正规商家检测你是否购买的是正品',
+            content: '已经查询3次以上，请确认你是否购买的是正品',
+            showCancel: false,
             success: function(res) {
               if (res.confirm) {
-                console.log('用户点击的是确定')
+                wepy.navigationBack()
               }
             }
           })

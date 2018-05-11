@@ -8,13 +8,17 @@
   dependencies:
     "@minui/wxc-flex" "1.0.5"
 
-"@minui/wxc-flex@1.0.5":
+"@minui/wxc-flex@1.0.5", "@minui/wxc-flex@^1.0.5":
   version "1.0.5"
   resolved "http://r.cnpmjs.org/@minui/wxc-flex/download/@minui/wxc-flex-1.0.5.tgz#0e6b22d5740fa86772a79d7c84122418cef1241d"
 
 "@minui/wxc-icon@^1.0.9":
   version "1.0.9"
   resolved "http://r.cnpmjs.org/@minui/wxc-icon/download/@minui/wxc-icon-1.0.9.tgz#689563d326146a92c0ba547d128c7f322a340ef1"
+
+"@minui/wxc-steps@^1.0.7":
+  version "1.0.7"
+  resolved "http://r.cnpmjs.org/@minui/wxc-steps/download/@minui/wxc-steps-1.0.7.tgz#4b2d96f857427725df086b4998d75ea3d206c2c2"
 
 "@minui/wxc-toast@^1.0.9":
   version "1.0.9"

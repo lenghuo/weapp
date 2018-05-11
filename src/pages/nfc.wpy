@@ -26,7 +26,7 @@
         console.log(err)
         wepy.showModal({
           title: '提示',
-          content: err.errMsg,
+          content: '您的设备不支持NFC，请使用二维码查询或输入溯源码查询',
           showCancel: false,
           success: function (res) {
             if (res.confirm) {

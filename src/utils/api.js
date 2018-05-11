@@ -2,7 +2,7 @@ import wepy from 'wepy'
 import { asyncInc } from '../store/actions/counter'
 
 // 服务器接口地址
-const host = 'http://new.blog.test'
+const host = 'http://red.wine.com'
 
 // 普通请求
 const request = async (options) => {

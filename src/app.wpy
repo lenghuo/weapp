@@ -10,14 +10,18 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+      'pages/home',
+      'pages/trace',
       'pages/user',
       'pages/nfc',
-      'pages/qrcode'
+      'pages/qrcode',
+      'pages/wine',
+      'pages/company'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#f2f2f2',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '红酒溯源查询',
       navigationBarTextStyle: 'black'
     },
     tabBar: {

@@ -66,7 +66,7 @@
       this.$apply()
       if (scan) {
         wepy.navigateTo({
-          url: './qrcode?qrcode=' + this.scan
+          url: './home?qrcode=' + this.scan
         })
       }
     }

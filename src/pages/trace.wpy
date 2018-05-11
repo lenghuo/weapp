@@ -1,0 +1,101 @@
+<style lang="less">
+  .trace_header {
+    width: 100%;
+  }
+  .trace_header-img {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .trace-line {
+    height: 1px;
+    background: #000000;
+    margin-top: 10rpx;
+  }
+  .trace_page {
+    margin-top: 20rpx;
+    margin-right: 20rpx;
+    margin-left: 20rpx;
+    border: 2rpx solid #1296db;
+    border-radius: 12px;
+    opacity: 0.8;
+    height: 800rpx;
+  }
+  .trace_title {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content:  center;
+    margin-top: 30rpx;
+  }
+  .trace_content-img {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  .trace_title-content {
+    font-size: 45rpx;
+  }
+  .trace_content-header {
+    margin-top: 12rpx;
+    text-indent: 25px;
+  }
+  .trace_items {
+    text-align: center;
+  }
+</style>
+<template>
+  <view class="trace_header">
+    <image class="trace_header-img" src="https://wafer-1252027874.cos.ap-guangzhou.myqcloud.com/%E7%BA%A2%E9%85%92%E6%BA%AF%E6%BA%902.jpg" mode="widthFix" />
+  </view>
+  <view class="trace_page">
+    <view class="trace_title">
+      <image class="trace_content-img" src="https://wafer-1252027874.cos.ap-guangzhou.myqcloud.com/%E6%AD%A3%E5%93%81%E4%BF%9D%E9%9A%9C2.png" />
+      <view class="trace_title-content">真伪信息</view>
+    </view>
+    <view class="trace_content">
+      <view class="trace_content-header">该商品于 {{ time[0].created_at }} 第一次查询，谨慎购买！如有疑问请联系官方客服，客服电话详就见企业信息，
+        可进一步确认产品真伪，谨防假冒。</view>
+      <view class="trace_items">查询记录如下:</view>
+      <repeat for="{{time}}" key="id" index="index" item="times">
+        <view class="trace_items">{{ times.created_at }}</view>
+      </repeat>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import api from '@/utils/api'
+  export default class Trace extends wepy.page {
+    config = {}
+    data = {
+      time: []
+    }
+    async getEpc(id) {
+      try {
+        let epc = await api.request({
+          url: 'show/' + id
+        })
+        console.log(epc)
+        let usedLife = epc.data.data.used_life
+        if (usedLife === 3) {
+          wepy.showModal({
+            title: '提示',
+            content: '该条码查询次数已达3次，请请确认你是否的为正品',
+            showCancel: false
+          })
+        }
+        this.time = epc.data.data.time.time
+        this.$apply()
+      } catch (err) {
+        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员',
+          showCancel: false
+        })
+      }
+    }
+    async onLoad(options) {
+      this.getEpc(options.id)
+    }
+  }
+</script>
