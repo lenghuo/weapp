@@ -40,7 +40,7 @@
     <image class="page_bg" src="https://wafer-1252027874.cos.ap-guangzhou.myqcloud.com/TIM%E5%9B%BE%E7%89%8720180510172653.png" mode="widthFix" />
   </view>
   <wxc-flex class="wrap" main="{{main}}">
-    <navigator url="./trace?id={{item.id}}">
+    <navigator url="./trace?security={{ security }}">
       <view class="item">
         防伪信息
         <view class="trace-line"></view>
@@ -49,7 +49,7 @@
         </view>
       </view>
     </navigator>
-    <navigator url="./wine?id={{item.wine_id}}">
+    <navigator url="./wine?wine={{wineItem}}">
       <view class="item">
         溯源信息
         <view class="trace-line"></view>
@@ -58,7 +58,7 @@
         </view>
       </view>
     </navigator>
-    <navigator url="./company?id={{item.company_id}}">
+    <navigator url="./company?company={{ companyItem }}">
       <view class="item">
         企业信息
         <view class="trace-line"></view>
@@ -80,17 +80,55 @@
     }
     data = {
       main: 'around',
-      item: {}
+      security: {},
+      companyItem: {},
+      wineItem: {}
     }
-    async getId(qrcode) {
+    async getItem(qrcode) {
       let item = await api.request({
-        url: 'qrcode/' + qrcode
+        url: 'GetSecurityInfoQRCodeByClient/',
+        data: {
+          QRCode: qrcode
+        }
       })
-      this.item = item.data.data
+      // console.log(item)
+      let security = item.data.Security
+      let company = item.data.Company
+      let qscard = item.data.CompanyQSCard
+      let wineEpc = item.data.WineEpc
+      let grape = item.data.Grape
+      let wineType = item.data.WineType
+      let wineRegion = item.data.WineRegion
+      let wineWinery = item.data.WineWinery
+      let wineMaker = item.data.WineMaker
+      let wineScope = item.data.WineScope
+      let wineAwords = item.data.WineAwords
+      let winePic = item.data.WinePic
+      let wineVideo = item.data.WineVideo
+      let wineItems = {
+        wineEpc: wineEpc,
+        grape: grape,
+        wineType: wineType,
+        wineRegion: wineRegion,
+        wineWinery: wineWinery,
+        wineMaker: wineMaker,
+        wineScope: wineScope,
+        wineAwords: wineAwords,
+        winePic: winePic,
+        wineVideo: wineVideo
+      }
+      let companyItems = {
+        company: company,
+        qscard: qscard
+      }
+      // console.log(wineItems)
+      this.security = JSON.stringify(security)
+      this.companyItem = JSON.stringify(companyItems)
+      this.wineItem = JSON.stringify(wineItems)
       this.$apply()
     }
     onLoad(options) {
-      this.getId(options.qrcode)
+      this.getItem(options.qrcode)
     }
   }
 </script>

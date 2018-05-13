@@ -4,28 +4,31 @@
 </template>
 <script>
   import wepy from 'wepy'
-  import api from '@/utils/api'
+  // import api from '@/utils/api'
 
   export default class Company extends wepy.page {
     config = {}
     data = {}
-    async getCompany(id) {
-      try {
-        let company = await api.request({
-          url: 'company/' + id
-        })
-        console.log(company)
-      } catch (err) {
-        console.log(err)
-        wepy.showModal({
-          title: '提示',
-          content: '服务器错误，请联系管理员',
-          showCancel: false
-        })
-      }
-    }
+    // async getCompany(id) {
+    //   try {
+    //     let company = await api.request({
+    //       url: 'company/' + id
+    //     })
+    //     console.log(company)
+    //   } catch (err) {
+    //     console.log(err)
+    //     wepy.showModal({
+    //       title: '提示',
+    //       content: '服务器错误，请联系管理员',
+    //       showCancel: false
+    //     })
+    //   }
+    // }
     onLoad (options) {
-      this.getCompany(options.id)
+      let company = options.company
+      let item = JSON.parse(company)
+      console.log(item)
+      // this.getCompany(options.company)
     }
   }
 </script>

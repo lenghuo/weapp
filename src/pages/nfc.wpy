@@ -28,11 +28,10 @@
           title: '提示',
           content: '您的设备不支持NFC，请使用二维码查询或输入溯源码查询',
           showCancel: false,
-          success: function (res) {
+          confirmText: '朕知道了',
+          success: function(res) {
             if (res.confirm) {
-              wepy.switchTab({
-                url: 'pages/index'
-              })
+              wepy.navigateBack()
             }
           }
         })

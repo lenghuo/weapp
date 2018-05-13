@@ -15,10 +15,9 @@
     margin-top: 20rpx;
     margin-right: 20rpx;
     margin-left: 20rpx;
-    border: 2rpx solid #1296db;
-    border-radius: 12px;
-    opacity: 0.8;
-    height: 800rpx;
+    // border: 2rpx solid #1296db;
+    // border-radius: 12px;
+    height: auto;
   }
   .trace_title {
     align-items: center;
@@ -52,50 +51,55 @@
       <view class="trace_title-content">真伪信息</view>
     </view>
     <view class="trace_content">
-      <view class="trace_content-header">该商品于 {{ time[0].created_at }} 第一次查询，谨慎购买！如有疑问请联系官方客服，客服电话详就见企业信息，
+      <view class="trace_content-header">该商品已被查询 {{ queryCount }} 次，商品于 {{ allTime.firstTime }} 第一次查询，最新一次查询时间为 {{ allTime.lastTime }}。如有疑问请联系官方客服，客服电话详就见企业信息，
         可进一步确认产品真伪，谨防假冒。</view>
       <view class="trace_items">查询记录如下:</view>
       <repeat for="{{time}}" key="id" index="index" item="times">
-        <view class="trace_items">{{ times.created_at }}</view>
+        <view class="trace_items">{{ times.QueryTime_diff }}</view>
       </repeat>
     </view>
   </view>
 </template>
 <script>
   import wepy from 'wepy'
-  import api from '@/utils/api'
+  import util from '@/utils/util'
+  // import api from '@/utils/api'
   export default class Trace extends wepy.page {
     config = {}
     data = {
-      time: []
+      time: [],
+      queryTime: [],
+      allTime: {},
+      queryCount: null
     }
-    async getEpc(id) {
-      try {
-        let epc = await api.request({
-          url: 'show/' + id
-        })
-        console.log(epc)
-        let usedLife = epc.data.data.used_life
-        if (usedLife === 3) {
-          wepy.showModal({
-            title: '提示',
-            content: '该条码查询次数已达3次，请请确认你是否的为正品',
-            showCancel: false
-          })
-        }
-        this.time = epc.data.data.time.time
-        this.$apply()
-      } catch (err) {
-        console.log(err)
+    async getSecurity(security) {
+      let items = JSON.parse(security)
+      let firstTime = util.normalTime(items.FirstQueryTime)
+      let lastTime = util.normalTime(items.LastQueryTime)
+      this.allTime = {
+        firstTime: firstTime,
+        lastTime: lastTime
+      }
+      let time = items.SecurityLog
+      this.queryCount = items.QueryCount
+      this.time = time
+      this.$apply()
+      if (this.queryCount >= 4) {
         wepy.showModal({
           title: '提示',
-          content: '服务器错误，请联系管理员',
-          showCancel: false
+          content: '该商品查询记录已超过 4 次，请确认你购买的是否为正品。',
+          showCancel: false,
+          confirmText: '朕知道了'
         })
       }
+      let logs = items.SecurityLog
+      logs.forEach(function (times) {
+        times.QueryTime_diff = util.normalTime(times.QueryTime)
+        // console.log(times.QueryTime_diff)
+      })
     }
     async onLoad(options) {
-      this.getEpc(options.id)
+      this.getSecurity(options.security)
     }
   }
 </script>

@@ -22,6 +22,7 @@
     "@minui/wxc-steps": "^1.0.7",
     "@minui/wxc-toast": "^1.0.9",
     "lodash": "^4.17.5",
+    "moment": "^2.22.1",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-promise": "^0.5.3",
