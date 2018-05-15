@@ -85,7 +85,7 @@
       let time = items.SecurityLog
       this.queryCount = items.QueryCount
       this.time = time
-      this.tel = items.tel
+      this.tel = items.Tel
       this.$apply()
       if (this.queryCount >= 4) {
         wepy.showModal({
