@@ -1,32 +1,180 @@
 <style lang="less">
+  .cell-panel-demo {
+    display: block;
+  }
+  .zan-cell-img {
+    width: 100%;
+  }
+  .wine-doc-page {
+    margin-buttom: 0;
+    margin-top: 0;
+  }
 </style>
 <template>
+  <doc-page title="红酒信息" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <zan-cell title="酒名：{{ wineInfo.name }}"></zan-cell>
+        <zan-cell title="产区：{{ wineInfo.productArea }}"></zan-cell>
+        <zan-cell title="品牌：{{ wineInfo.brand }}"></zan-cell>
+        <zan-cell title="风格：{{ wineInfo.style }}"></zan-cell>
+        <zan-cell title="类型：{{ wineInfo.type }}"></zan-cell>
+        <zan-cell title="价格：{{ wineInfo.price }}"></zan-cell>
+        <zan-cell title="年份：{{wineInfo.age }}"></zan-cell>
+        <zan-cell title="酒精度：{{ wineInfo.alcohol }}"></zan-cell>
+        <zan-cell title="容量：{{ wineInfo.capacity }}"></zan-cell>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="图片和视频" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <zan-cell>
+          <repeat for="{{pics}}" key="id" index="index" item="pic">
+            <image class="zan-cell-img" src="{{host}}{{ pic.FileUpload.FullFile }}" mode="widthFix" />
+          </repeat>
+        </zan-cell>
+        <zan-cell>
+          <repeat for="{{videos}}" key="id" index="index" item="video">
+            <video style="width:100%" src="{{host}}{{video.FileUpload.FullFile}}" enable-danmu danmu-btn controls></video>
+          </repeat>
+        </zan-cell>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="酒庄信息" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <zan-cell title="名称：{{ winery.name }}"></zan-cell>
+        <zan-cell title="原产地：{{ winery.region }}"></zan-cell>
+        <zan-cell title="种植地区：{{ winery.info }}"></zan-cell>
+        <zan-cell>
+          <image class="zan-cell-img" src="{{host}}{{ winery.pic }}" mode="widthFix" />
+        </zan-cell>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="酿酒师" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <zan-cell title="名称：{{ maker.name }}"></zan-cell>
+        <zan-cell>
+          <image class="zan-cell-img" src="{{host}}{{ maker.pic }}" mode="widthFix" />
+        </zan-cell>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="酒评分信息" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <repeat for="{{scope}}" key="id" index="index" item="scopes">
+          <zan-cell title="评分人：{{ scopes.ScoperName }}"></zan-cell>
+          <zan-cell title="得分：{{ scopes.ScopeNum }}"></zan-cell>
+          <zan-cell title="总分：{{ scopes.TotalNum }}"></zan-cell>
+          <zan-cell title="评分时间：{{ scopes.ScopeTime_at }}"></zan-cell>
+          <zan-cell title="适饮时间：{{ scopes.DrinkTime_at }}"></zan-cell>
+          <zan-cell>
+            <image class="zan-cell-img" src="{{host}}{{ scopes.ScoperBase.FileUpload.FullFile }}" mode="widthFix" />
+          </zan-cell>
+        </repeat>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="获奖信息" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <repeat for="{{awords}}" key="id" index="index" item="aword">
+          <zan-cell title="颁奖组织：{{ aword.OrganisationName }}"></zan-cell>
+          <zan-cell title="获奖等级：{{ aword.PrizesName }}"></zan-cell>
+          <zan-cell title="获奖时间：{{ aword.AwordingTime_at }}"></zan-cell>
+          <zan-cell>
+            <image class="zan-cell-img" src="{{host}}{{ aword.FileUpload.FullFile }}" mode="widthFix" />
+          </zan-cell>
+        </repeat>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
+  <doc-page title="葡萄品种信息" without-padding class="wine-doc-page">
+    <zan-panel class="cell-panel-demo">
+      <zan-cell-group>
+        <repeat for="{{grape}}" key="id" index="index" item="item">
+          <zan-cell title="品名：{{ item.Name }}"></zan-cell>
+          <zan-cell title="原产地：{{ item.Origin }}"></zan-cell>
+          <zan-cell title="种植地区：{{ item.PlansArea }}"></zan-cell>
+          <zan-cell>
+            <image class="zan-cell-img" src="{{host}}{{ item.FileUpload.FullFile }}" mode="widthFix" />
+          </zan-cell>
+        </repeat>
+      </zan-cell-group>
+    </zan-panel>
+  </doc-page>
 </template>
 <script>
   import wepy from 'wepy'
+  import util from '@/utils/util'
   // import api from '@/utils/api'
 
   export default class Wine extends wepy.page {
-    config = {}
-    data = {}
-    // async getWine(id) {
-    //   try {
-    //     let wine = await api.request({
-    //       url: 'wine/' + id
-    //     })
-    //     console.log(wine)
-    //   } catch (err) {
-    //     console.log(err)
-    //     wepy.showModal({
-    //       title: '提示',
-    //       content: '服务器错误，请联系管理员'
-    //     })
-    //   }
-    // }
+    config = {
+      'usingComponents': {
+        'zan-cell': '../zanui/cell/index',
+        'zan-cell-group': '../zanui/cell-group/index',
+        'doc-page': '../components/doc-page/index',
+        'zan-panel': '../zanui/panel/index'
+      }
+    }
+    data = {
+      host: 'http://sh.winechain.org',
+      wineInfo: {},
+      grape: [],
+      winery: {},
+      maker: {},
+      scope: [],
+      awords: [],
+      pics: [],
+      videos: []
+    }
+    async getWine(wine) {
+      this.wineInfo = {
+        name: wine.wineEpc.Name,
+        productArea: wine.wineEpc.RegionName + wine.wineEpc.Origin,
+        brand: wine.wineEpc.Brand,
+        style: wine.wineEpc.FlavorStyle,
+        type: wine.wineEpc.WineTypeName,
+        price: wine.wineEpc.Price,
+        age: wine.wineEpc.Age,
+        alcohol: wine.wineEpc.AlcoholName,
+        // 容量
+        capacity: wine.wineEpc.CapaCityName
+      }
+      this.winery = {
+        name: wine.wineWinery.Name,
+        region: wine.wineWinery.RegionName,
+        info: wine.wineWinery.Info,
+        pic: wine.wineWinery.FileUpload.FullFile
+      }
+      this.grape = wine.grape
+      this.maker = {
+        name: wine.wineMaker.Name,
+        pic: wine.wineMaker.FileUpload.FullFile
+      }
+      this.scope = wine.wineScope
+      this.awords = wine.wineAwords
+      this.pics = wine.winePic
+      this.videos = wine.wineVideo
+      this.$apply()
+      let scope = wine.wineScope
+      scope.forEach(function(scopes) {
+        scopes.ScopeTime_at = util.normalTime(scopes.ScopeTime)
+        scopes.DrinkTime_at = util.normalTime(scopes.DrinkTime)
+      })
+      let awords = wine.wineAwords
+      awords.forEach(function(aword) {
+        aword.AwordingTime_at = util.normalTime(aword.AwordingTime)
+      })
+    }
     onLoad(options) {
-      // this.getWine(options.id)
-      let item = JSON.parse(options.wine)
-      console.log(item)
+      this.getWine(JSON.parse(options.wine))
     }
   }
 </script>

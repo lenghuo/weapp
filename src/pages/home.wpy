@@ -91,19 +91,30 @@
           QRCode: qrcode
         }
       })
-      // console.log(item)
+      // 溯源信息
       let security = item.data.Security
+      // 公司信息以及公司QSCard信息
       let company = item.data.Company
       let qscard = item.data.CompanyQSCard
+      // EPC信息
       let wineEpc = item.data.WineEpc
+      // 葡萄品种
       let grape = item.data.Grape
+      // 酒类型
       let wineType = item.data.WineType
+      // 酒产区
       let wineRegion = item.data.WineRegion
+      // 酒庄信息
       let wineWinery = item.data.WineWinery
+      // 酿酒师
       let wineMaker = item.data.WineMaker
+      // 酒得分
       let wineScope = item.data.WineScope
+      // 酒获奖
       let wineAwords = item.data.WineAwords
+      // 酒图片
       let winePic = item.data.WinePic
+      // 酒视频
       let wineVideo = item.data.WineVideo
       let wineItems = {
         wineEpc: wineEpc,
@@ -121,7 +132,6 @@
         company: company,
         qscard: qscard
       }
-      // console.log(wineItems)
       this.security = JSON.stringify(security)
       this.companyItem = JSON.stringify(companyItems)
       this.wineItem = JSON.stringify(wineItems)

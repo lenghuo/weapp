@@ -1,5 +1,11 @@
 <style lang="less">
 @import 'style/weui.less';
+@import 'zanui/index.wxss';
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
 </style>
 
 <script>
@@ -11,12 +17,12 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/home',
+      'pages/wine',
       'pages/trace',
+      'pages/company',
       'pages/user',
       'pages/nfc',
-      'pages/qrcode',
-      'pages/wine',
-      'pages/company'
+      'pages/qrcode'
     ],
     window: {
       backgroundTextStyle: 'light',

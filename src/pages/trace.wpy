@@ -51,7 +51,8 @@
       <view class="trace_title-content">真伪信息</view>
     </view>
     <view class="trace_content">
-      <view class="trace_content-header">该商品已被查询 {{ queryCount }} 次，商品于 {{ allTime.firstTime }} 第一次查询，最新一次查询时间为 {{ allTime.lastTime }}。如有疑问请联系官方客服，客服电话详就见企业信息，
+      <view class="trace_content-header">该商品已被查询 {{ queryCount }} 次，商品于 {{ allTime.firstTime }} 第一次查询，最新一次查询时
+        间为 {{ allTime.lastTime }}。如有疑问请联系官方客服，客服电话: {{ tel }}，
         可进一步确认产品真伪，谨防假冒。</view>
       <view class="trace_items">查询记录如下:</view>
       <repeat for="{{time}}" key="id" index="index" item="times">
@@ -70,7 +71,8 @@
       time: [],
       queryTime: [],
       allTime: {},
-      queryCount: null
+      queryCount: null,
+      tel: null
     }
     async getSecurity(security) {
       let items = JSON.parse(security)
@@ -83,6 +85,7 @@
       let time = items.SecurityLog
       this.queryCount = items.QueryCount
       this.time = time
+      this.tel = items.tel
       this.$apply()
       if (this.queryCount >= 4) {
         wepy.showModal({
