@@ -1,0 +1,71 @@
+<style lang="less">
+  .query-form {
+    margin-top: 40%;
+  }
+  .query-text {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 40px;
+  }
+  .query-input {
+    height: 40px;
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+  .query-btn {
+    width: 140px;
+    margin-top: 40px;
+  }
+  .error-message {
+    color: #E64340;
+  }
+</style>
+<template>
+  <view class="query-form">
+    <form bindsubmit="submit">
+      <view>
+        <view class="query-text">溯源码查询</view>
+        <input class="query-input" type="text" name="query" placeholder="输入溯源码" />
+        <view wx:if="{{error}}" class="error-message">{{error}}</view>
+        <button type="primary" class="query-btn" formType="submit">查询</button>
+      </view>
+    </form>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Query extends wepy.page {
+    config = {
+      'usingComponents': {
+        'zan-panel': '../zanui/panel/index'
+      }
+    }
+    data = {
+      error: null
+    }
+    async submit(e) {
+      this.error = null
+      try {
+        let formData = e.detail.value
+        this.query = formData.query
+        if (this.query.length < 18 || this.query.length > 18) {
+          this.error = '你输入正确的18位溯源码'
+          this.$apply()
+        }
+        if (this.query.length === 18) {
+          if (this.query.substring(0, 2) === 'FB') {
+            wepy.navigateTo({
+              url: './home?qrcode=' + this.query
+            })
+          } else {
+            this.error = '你输入的溯源码可能是伪造的，请您联系客服鉴别。'
+            this.$apply()
+          }
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+</script>

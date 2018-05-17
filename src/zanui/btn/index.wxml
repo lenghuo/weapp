@@ -3,6 +3,7 @@
   disabled="{{ disabled }}"
   open-type="{{ openType }}"
   bindtap="handleTap"
+  form-Type="{{ formType }}"
 >
   <slot></slot>
 </button>

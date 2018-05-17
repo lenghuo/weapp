@@ -27,7 +27,7 @@
         <image class="demo__pic" src="../images/qrcode.png" mode="aspectFit" @tap="scan" />
       </view>
       <view class="demo-wraper">
-        <image class="demo__pic" src="../images/trace.png" mode="aspectFit" />
+        <image class="demo__pic" src="../images/trace.png" mode="aspectFit" @tap="query" />
       </view>
     </wxc-cc>
     <wxc-cc class="demo">
@@ -79,6 +79,23 @@
         wepy.navigateTo({
           url: './nfc'
         })
+      },
+      query () {
+        wepy.navigateTo({
+          url: './query'
+        })
+      },
+      onShareAppMessage (res) {
+        return {
+          title: '源头可追溯，信息可查询，欢迎访问酒链溯源平台',
+          path: '/pages/index',
+          success: function(res) {
+            console.log(res)
+          },
+          fail: function(res) {
+            console.log(res)
+          }
+        }
       }
     }
 
